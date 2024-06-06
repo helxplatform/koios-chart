@@ -1,0 +1,80 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "koios-chart.fullname" . }}
+  labels:
+    {{- include "koios-chart.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "koios-chart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "koios-chart.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: "OLLAMA_URL"
+              value: {{ .Values.env.OLLAMA_URL }}
+            - name: "QDRANT_URL"
+              value: {{ .Values.env.QDRANT_URL }}
+            - name: "GEN_MODEL_NAME"
+              value: {{ .Values.env.GEN_MODEL_NAME }}
+            - name: "EMB_MODEL_NAME"
+              value: {{ .Values.env.EMB_MODEL_NAME }}
+            - name: "QDRANT_COLLECTION_NAME"
+              value: {{ .Values.env.QDRANT_COLLECTION_NAME }}
+            - name: "STUDIES_JSON_FILE"
+              value: {{ .Values.env.STUDIES_JSON_FILE }}
+          command:
+            - uvicorn
+          args:
+            - src.server:app
+            - "--port"
+            - "8080"
+            - "--host"
+            - "0.0.0.0"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /mnt
+              name: data-vol
+      volumes:
+        - name: data-vol
+          persistentVolumeClaim:
+            claimName: {{ include "koios-chart.fullname" . }}-data-pvc
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

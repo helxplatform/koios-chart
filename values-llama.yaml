@@ -4,7 +4,7 @@
 
 
 image:
-  tag: "v0.0.1"
+  tag: "v0.0.2"
 
 env:
   OLLAMA_URL: "http://ollama:11434"
@@ -12,6 +12,7 @@ env:
   GEN_MODEL_NAME: "llama3"
   EMB_MODEL_NAME: "llama3"
   QDRANT_COLLECTION_NAME: "test_collection2"
+  LOG_FILE_PATH: "/mnt/koios.log"
 
 ingress:
   enabled: true

@@ -45,10 +45,12 @@ spec:
               value: {{ .Values.env.QDRANT_COLLECTION_NAME }}
             - name: "STUDIES_JSON_FILE"
               value: {{ .Values.env.STUDIES_JSON_FILE }}
+            - name: "LOG_FILE_PATH"
+              value: {{ .Values.env.LOG_FILE_PATH }}
           command:
             - uvicorn
           args:
-            - src.server:app
+            - src.chain:app
             - "--port"
             - "8080"
             - "--host"

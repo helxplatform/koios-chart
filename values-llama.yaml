@@ -4,7 +4,7 @@
 
 
 image:
-  tag: "v0.0.2"
+  tag: "v0.0.4"
 
 env:
   OLLAMA_URL: "http://ollama:11434"

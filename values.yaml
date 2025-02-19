@@ -26,12 +26,24 @@ args:
 
 
 env:
-  OLLAMA_URL: "http://ollama:11434"
+  EMBEDDING_URL: "http://ollama:11434"
   QDRANT_URL: "http://koios-sapbert-qdrant:6333"
-  GEN_MODEL_NAME: "llama3.1"
-  EMB_MODEL_NAME: "llama3.1"
-  QDRANT_COLLECTION_NAME: "questions_on_study_abstract"
-  STUDIES_JSON_FILE: "/mnt/studies.json"
+  LLM_URL: "http://vllm-llama-3-1-8b-instruct/v1"
+  LLM_SERVER_TYPE: "VLLM"
+  GEN_MODEL_NAME: "meta-llama/Meta-Llama-3.1-8B-Instruct"
+  EMB_MODEL_NAME: "bge-m3"
+  QDRANT_COLLECTION_NAME: "questions_on_study_abstract_bge"
+  LOG_FILE_PATH: "/mnt/koios.log"
+  LANGFUSE_ENABLED: "true"
+  LANGFUSE_SECRET_KEY: ""
+  LANGFUSE_PUBLIC_KEY: ""
+  LANGFUSE_HOST: "http://langfuse:3000"
+  REDIS_HOST: "search-redis-master.bdc-search-dev"
+  REDIS_PASSWORD: ""
+  REDIS_GRAPH_NAME: ""
+  TMP_DIR: '/tmp'
+  GUARDIAN_MODEL_NAME: "llama3.1:latest"
+  GUARDIAN_MODEL_URL: "http://ollama:11434"
 
 storageSize: 100Mi
 

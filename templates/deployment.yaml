@@ -21,7 +21,6 @@ spec:
       {{- end }}
       labels:
         {{- include "koios-chart.selectorLabels" . | nindent 8 }}
-    spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
@@ -53,6 +52,9 @@ spec:
           volumeMounts:
             - mountPath: /mnt
               name: data-vol
+            - mountPath: /tmp
+              name: data-vol
+              subPath: tmp
       volumes:
         - name: data-vol
           persistentVolumeClaim:

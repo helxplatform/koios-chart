@@ -14,15 +14,23 @@ imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
 
+commands:
+  - uvicorn
+
+args:
+  - src.chain:app
+  - "--port"
+  - "8080"
+  - "--host"
+  - "0.0.0.0"
 
 
 env:
-
   OLLAMA_URL: "http://ollama:11434"
   QDRANT_URL: "http://koios-sapbert-qdrant:6333"
-  GEN_MODEL_NAME: "llama3"
-  EMB_MODEL_NAME: "llama3"
-  QDRANT_COLLECTION_NAME: "test_collection2"
+  GEN_MODEL_NAME: "llama3.1"
+  EMB_MODEL_NAME: "llama3.1"
+  QDRANT_COLLECTION_NAME: "questions_on_study_abstract"
   STUDIES_JSON_FILE: "/mnt/studies.json"
 
 storageSize: 100Mi
